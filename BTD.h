@@ -13,7 +13,11 @@
  Kristian Lauszus, TKJ Electronics
  Web      :  http://www.tkjelectronics.com
  e-mail   :  kristianl@tkjelectronics.com
- */
+ 
+ Modified 9 April 2013 by Shun Ito
+ Web      :  http://ll0s0ll.wordpress.com/
+*/
+
 
 #ifndef _btd_h_
 #define _btd_h_
@@ -27,8 +31,10 @@
 #define PS3NAVIGATION_PID   0x042F  // Navigation controller
 #define PS3MOVE_PID         0x03D5  // Motion controller
 
+//-- MODIFIED> -----------------------------------------------------------//
 /* Bluetooth dongle data taken from descriptors */
-#define BULK_MAXPKTSIZE     64 // max size for ACL data
+#define BULK_MAXPKTSIZE     128 // max size for ACL data 64->128 MODIFIED
+//-- <MODIFIED -----------------------------------------------------------//
 
 // Used in control endpoint header for HCI Commands
 #define bmREQ_HCI_OUT USB_SETUP_HOST_TO_DEVICE|USB_SETUP_TYPE_CLASS|USB_SETUP_RECIPIENT_DEVICE
@@ -56,6 +62,11 @@
 #define HCI_DISABLE_SCAN_STATE  14
 #define HCI_DONE_STATE          15
 #define HCI_DISCONNECT_STATE    16
+//-- MODIFIED> -----------------------------------------------------------//
+#define HCI_WRITE_CoD_STATE             17
+#define HCI_WRITE_SIMPLE_PAIRING_STATE  18
+#define HCI_SET_EVENT_MASK_STATE        19
+//-- <MODIFIED -----------------------------------------------------------//
 
 /* HCI event flags*/
 #define HCI_FLAG_CMD_COMPLETE           0x01
@@ -102,6 +113,13 @@
 #define EV_COMMAND_STATUS                               0x0F
 #define EV_LOOPBACK_COMMAND                             0x19
 #define EV_PAGE_SCAN_REP_MODE                           0x20
+//-- MODIFIED> -----------------------------------------------------------//
+//#define EV_SIMPLE_PAIRING_COMPLETE                      0x2C
+#define EV_IO_CAPABILITY_REQUEST                        0x31
+#define EV_IO_CAPABILITY_RESPONSE                       0x32
+#define EV_USER_CONFIRMATION_REQUEST                    0x33
+#define EV_SIMPLE_PAIRING_COMPLETE                      0x36
+//-- <MODIFIED -----------------------------------------------------------//
 
 /* L2CAP signaling commands */
 #define L2CAP_CMD_COMMAND_REJECT        0x01
@@ -404,6 +422,21 @@ public:
         uint8_t readPollInterval() {
                 return pollInterval;
         };
+//-- MODIFIED> -----------------------------------------------------------//
+//		  void hci_write_class_of_device();
+		  void hci_Write_Simple_Pairing_Mode();
+		  void hci_Set_Event_Mask_SPM();
+		  void hci_Authentication_Requested(uint16_t handle);
+		  void hci_IO_Capability_Request_Reply();
+		  void hci_User_Confirmation_Request_Reply();
+		  void hci_Set_Connection_Encryption(uint16_t handle);
+		  bool isSimplePairingCompleted(){return m_simple_pairing_completed;};
+		  void StartSimplePairingOperation(uint16_t handle)
+		  {
+			  m_simple_pairing_completed = false;
+			  hci_Authentication_Requested(handle);
+		  }
+//-- <MODIFIED -----------------------------------------------------------//
 
 protected:
         /** Pointer to USB class instance. */
@@ -460,5 +493,8 @@ private:
         /* Used to set the Bluetooth Address internally to the PS3 Controllers */
         void setBdaddr(uint8_t* BDADDR);
         void setMoveBdaddr(uint8_t* BDADDR);
+//-- MODIFIED> -----------------------------------------------------------//
+		  bool m_simple_pairing_completed;
+//-- <MODIFIED -----------------------------------------------------------//
 };
 #endif

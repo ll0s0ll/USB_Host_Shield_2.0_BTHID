@@ -46,8 +46,7 @@ pBtd(p) // pointer to USB class instance - mandatory
 {
 	if (pBtd)
 		pBtd->registerServiceClass(this); // Register it as a Bluetooth service
-	
-	pBtd->btdName = "HOGEra";
+
 	Reset();
 }
 
@@ -61,7 +60,7 @@ void BTHID::Reset() {//virtual
 
 void BTHID::disconnect() {//virtual
 #ifdef DEBUG
-	Notify(PSTR("\r\ndisconnect"));
+	Notify(PSTR("\r\ndisconnect"), 0x80);
 #endif
 //	connected = false;
 	m_current_state = STATE_DISCONNECT_OPERATION;
@@ -76,32 +75,32 @@ void BTHID::ACLData(uint8_t* l2capinbuf) {//virtual
 				///--- L2CAP_CMD_COMMAND_REJECT ---///
 				if (l2capinbuf[8] == L2CAP_CMD_COMMAND_REJECT) {
 #ifdef DEBUG
-					Notify(PSTR("\r\nL2CAP Command Rejected - Reason: "));
-					PrintHex<uint8_t>(l2capinbuf[13]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[12]);
-					Notify(PSTR(" Data: "));
-					PrintHex<uint8_t>(l2capinbuf[17]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[16]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[15]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[14]);
+					Notify(PSTR("\r\nL2CAP Command Rejected - Reason: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[13], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[12], 0x80);
+					Notify(PSTR(" Data: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[17], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[16], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[15], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[14], 0x80);
 #endif
 				///--- L2CAP_CMD_CONNECTION_REQUEST ---///
 				} else if (l2capinbuf[8] == L2CAP_CMD_CONNECTION_REQUEST) {
 #ifdef EXTRADEBUG
-					Notify(PSTR("\r\nL2CAP Connection Request - PSM: "));
-					PrintHex<uint8_t>(l2capinbuf[13]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[12]);
-					Notify(PSTR(" SCID: "));
-					PrintHex<uint8_t>(l2capinbuf[15]);
-					Notify(PSTR(" "));
-					PrintHex<uint8_t>(l2capinbuf[14]);
-					Notify(PSTR(" Identifier: "));
-					PrintHex<uint8_t>(l2capinbuf[9]);
+					Notify(PSTR("\r\nL2CAP Connection Request - PSM: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[13], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[12], 0x80);
+					Notify(PSTR(" SCID: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[15], 0x80);
+					Notify(PSTR(" "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[14], 0x80);
+					Notify(PSTR(" Identifier: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[9], 0x80);
 #endif
 					//Reset state
 					m_current_state = STATE_WAIT;
@@ -157,18 +156,18 @@ void BTHID::ACLData(uint8_t* l2capinbuf) {//virtual
 					if (l2capinbuf[12] == m_temp_dcid[0] && l2capinbuf[13] == m_temp_dcid[1]) {
 						//Serial.print("\r\nSDP Configuration Request");
 #ifdef EXTRADEBUG
-						Notify(PSTR("\r\nCONFIG_REQUEST Flag: "));
-						PrintHex<uint8_t>(l2capinbuf[14]);
-						Notify(PSTR(" "));
-						PrintHex<uint8_t>(l2capinbuf[15]);
-						Notify(PSTR(" Option: "));
-						PrintHex<uint8_t>(l2capinbuf[16]);
-						Notify(PSTR(" "));
-						PrintHex<uint8_t>(l2capinbuf[17]);
-						Notify(PSTR(" "));
-						PrintHex<uint8_t>(l2capinbuf[18]);
-						Notify(PSTR(" "));
-						PrintHex<uint8_t>(l2capinbuf[19]);
+						Notify(PSTR("\r\nCONFIG_REQUEST Flag: "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[14], 0x80);
+						Notify(PSTR(" "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[15], 0x80);
+						Notify(PSTR(" Option: "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[16], 0x80);
+						Notify(PSTR(" "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[17], 0x80);
+						Notify(PSTR(" "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[18], 0x80);
+						Notify(PSTR(" "), 0x80);
+						PrintHex<uint8_t>(l2capinbuf[19], 0x80);
 #endif
 						m_identifier = l2capinbuf[9];
 						m_event_flag |= EV_FLAG_CONFIG_REQUEST;
@@ -176,79 +175,79 @@ void BTHID::ACLData(uint8_t* l2capinbuf) {//virtual
 				///--- L2CAP_CMD_DISCONNECT_REQUEST ---///
 				} else if (l2capinbuf[8] == L2CAP_CMD_DISCONNECT_REQUEST) {
 					if ((l2capinbuf[12] | (l2capinbuf[13] << 8)) == SDP_DCID) {
-						Notify(PSTR("\r\nDisconnect Request: SDP Channel"));
+						Notify(PSTR("\r\nDisconnect Request: SDP Channel"), 0x80);
 						m_identifier = l2capinbuf[9];
 						//Reset state
 						m_current_state = STATE_DISCONNECT_OPERATION;
 						m_event_flag |= EV_FLAG_DISCONNECT_REQUEST;
 					} else if ((l2capinbuf[12] | (l2capinbuf[13] << 8)) == HID_CTRL_DCID) {
-						Notify(PSTR("\r\nDisconnect Request: HID_CTRL Channel"));
+						Notify(PSTR("\r\nDisconnect Request: HID_CTRL Channel"), 0x80);
 					} else if ((l2capinbuf[12] | (l2capinbuf[13] << 8)) == HID_INTR_DCID) {
-						Notify(PSTR("\r\nDisconnect Request: HID_INTR Channel"));
+						Notify(PSTR("\r\nDisconnect Request: HID_INTR Channel"), 0x80);
 					} else {
-						Notify(PSTR("\r\nDisconnect Request: UNKNOWN Channel"));
+						Notify(PSTR("\r\nDisconnect Request: UNKNOWN Channel"), 0x80);
 					}
 				///--- L2CAP_CMD_DISCONNECT_RESPONSE ---///
 				} else if (l2capinbuf[8] == L2CAP_CMD_DISCONNECT_RESPONSE) {
-					Notify(PSTR("\r\nL2CAP_CMD_DISCONNECT_RESPONSE:"));
+					Notify(PSTR("\r\nL2CAP_CMD_DISCONNECT_RESPONSE:"), 0x80);
 					if ((l2capinbuf[12] | (l2capinbuf[13] << 8)) == SDP_DCID) {
-						Notify(PSTR(" SDP Channel"));
+						Notify(PSTR(" SDP Channel"), 0x80);
 						SDPConnected = false;
 					} else if ((l2capinbuf[14] | (l2capinbuf[15] << 8)) == HID_CTRL_DCID) {
-						Notify(PSTR(" HID_CTRL Channel"));
+						Notify(PSTR(" HID_CTRL Channel"), 0x80);
 						HID_CTRL_Connected = false;
 					} else if ((l2capinbuf[14] | (l2capinbuf[15] << 8)) == HID_INTR_DCID) {
-						Notify(PSTR(" HID_INTR Channel"));
+						Notify(PSTR(" HID_INTR Channel"), 0x80);
 						HID_INTR_Connected = false;
 					}
 				} else {
-					Notify(PSTR("\r\nL2CAP Unknown Signaling Command: "));
-					PrintHex<uint8_t>(l2capinbuf[8]);
+					Notify(PSTR("\r\nL2CAP Unknown Signaling Command: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[8], 0x80);
 				}
 				break;
 
 			///-------------- SDP Protocol --------------///
 			case SDP_DCID:
 #ifdef EXTRADEBUG			
-				Notify(PSTR("\r\nSDP Protocol -"));
-				Notify(PSTR(" PDUID:"));
-				PrintHex<uint8_t>(l2capinbuf[8]);
-				Notify(PSTR(" TransuctionID:"));
-				PrintHex<uint8_t>(l2capinbuf[9]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[10]);
-				Notify(PSTR(" ParameterL:"));
-				PrintHex<uint8_t>(l2capinbuf[11]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[12]);
-				Notify(PSTR(" - "));
-				PrintHex<uint8_t>(l2capinbuf[13]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[14]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[15]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[16]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[17]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[18]);
-				Notify(PSTR(" "));
+				Notify(PSTR("\r\nSDP Protocol -"), 0x80);
+				Notify(PSTR(" PDUID:"), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[8], 0x80);
+				Notify(PSTR(" TransuctionID:"), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[9], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[10], 0x80);
+				Notify(PSTR(" ParameterL:"), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[11], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[12], 0x80);
+				Notify(PSTR(" - "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[13], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[14], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[15], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[16], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[17], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[18], 0x80);
+				Notify(PSTR(" "), 0x80);
 				for (int i=0; i < l2capinbuf[12]-6; i++) {
-					PrintHex<uint8_t>(l2capinbuf[19+i]);
-					Notify(PSTR(" "));
+					PrintHex<uint8_t>(l2capinbuf[19+i], 0x80);
+					Notify(PSTR(" "), 0x80);
 				}
 #endif
 				///--- SDP_SERVICE_SEARCH_REQUEST_PDU ---///
 				if(l2capinbuf[8] == SDP_SERVICE_SEARCH_REQUEST_PDU) {
-//					Notify(PSTR("\r\nSDP_SERVICE_SEARCH_REQUEST_PDU"));
+//					Notify(PSTR("\r\nSDP_SERVICE_SEARCH_REQUEST_PDU"), 0x80);
 					///--- L2CAP_UUID ---///
 					if ((l2capinbuf[16] << 8 | l2capinbuf[17]) == L2CAP_UUID) {
 						m_transactionID_high = l2capinbuf[9];
 						m_transactionID_low = l2capinbuf[10];
 						m_event_flag |= EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_L2CAP;
 					} else {
-//						Notify(PSTR("\r\nUUID ServiceNotSupported"));
+//						Notify(PSTR("\r\nUUID ServiceNotSupported"), 0x80);
 						m_transactionID_high = l2capinbuf[9];
 						m_transactionID_low = l2capinbuf[10];
 						m_event_flag |= EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_UNKNOWN;
@@ -259,22 +258,22 @@ void BTHID::ACLData(uint8_t* l2capinbuf) {//virtual
 					m_transactionID_low = l2capinbuf[10];
 					m_event_flag |= EV_FLAG_SDP_SERVICE_ATTRIBUTE_REQUEST;
 				} else {
-					Notify(PSTR("\r\nSDP Unknown Signaling Command: "));
-					PrintHex<uint8_t>(l2capinbuf[8]);
+					Notify(PSTR("\r\nSDP Unknown Signaling Command: "), 0x80);
+					PrintHex<uint8_t>(l2capinbuf[8], 0x80);
 				}
 				break;
 
 			///---------------- HID Ctrl ----------------///
 			case HID_CTRL_DCID:
 #ifdef EXTRADEBUG
-				Notify(PSTR("\r\nHID Protocol CID:"));
-				PrintHex<uint8_t>(l2capinbuf[6]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[7]);
-				Notify(PSTR(" THdr"));
+				Notify(PSTR("\r\nHID Protocol CID:"), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[6], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[7], 0x80);
+				Notify(PSTR(" THdr"), 0x80);
 				for (int i=0; i < l2capinbuf[4]; i++) {
-					PrintHex<uint8_t>(l2capinbuf[8+i]);
-					Notify(PSTR(" "));
+					PrintHex<uint8_t>(l2capinbuf[8+i], 0x80);
+					Notify(PSTR(" "), 0x80);
 				}
 #endif
 				///--- SET_PROTOCOL request(Report) ---///
@@ -283,16 +282,16 @@ void BTHID::ACLData(uint8_t* l2capinbuf) {//virtual
 				///--- HID_CONTROL request(SUSPEND) ---///
 				} else if (l2capinbuf[8] == 0x13) {
 #ifdef DEBUG
-					Notify(PSTR("\r\nHID_CONTROL request - SUSPEND. Go to reduced power mode. zzz.."));
+					Notify(PSTR("\r\nHID_CONTROL request - SUSPEND. Go to reduced power mode. zzz.."), 0x80);
 #endif
 				}
 				break;
 			
 			default:
-				Notify(PSTR("\r\nUnsupported L2CAP Data - Channel ID: "));
-				PrintHex<uint8_t>(l2capinbuf[7]);
-				Notify(PSTR(" "));
-				PrintHex<uint8_t>(l2capinbuf[6]);
+				Notify(PSTR("\r\nUnsupported L2CAP Data - Channel ID: "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[7], 0x80);
+				Notify(PSTR(" "), 0x80);
+				PrintHex<uint8_t>(l2capinbuf[6], 0x80);
 				break;
 		} //switch
 	}
@@ -306,7 +305,7 @@ void BTHID::Run() //virtual
 		case STATE_WAIT:
 			if (m_event_flag & EV_FLAG_CONNECTION_REQUEST)	{
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] CONNECTION_REQUEST"));
+				Notify(PSTR("\r\n[EV_FLAG] CONNECTION_REQUEST"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_CONNECTION_REQUEST;
@@ -327,7 +326,7 @@ void BTHID::Run() //virtual
 		case STATE_SIMPLE_PAIRING_OPERATION:
 			if (pBtd->isSimplePairingCompleted()) {
 #ifdef DEBUG
-				Notify(PSTR("\r\nSIMPLE_PAIRING_OPERATION COMPLETED"));
+				Notify(PSTR("\r\nSIMPLE_PAIRING_OPERATION COMPLETED"), 0x80);
 #endif
 				pBtd->l2cap_connection_response(pBtd->hci_handle,m_identifier, m_temp_dcid, m_temp_scid, SUCCESSFUL);
 				m_identifier++;
@@ -339,7 +338,7 @@ void BTHID::Run() //virtual
 		case STATE_SDP_CONNECTION_CONFIGURATION_OPERATION:
 			if (m_event_flag & EV_FLAG_CONFIG_REQUEST) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] CONFIG_REQUEST"));
+				Notify(PSTR("\r\n[EV_FLAG] CONFIG_REQUEST"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_CONFIG_REQUEST;
@@ -350,7 +349,7 @@ void BTHID::Run() //virtual
 			
 			if (m_event_flag & EV_FLAG_CONFIG_RESPONSE_SUCCESS) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] CONFIG_RESPONSE_SUCCESS"));
+				Notify(PSTR("\r\n[EV_FLAG] CONFIG_RESPONSE_SUCCESS"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_CONFIG_RESPONSE_SUCCESS;
@@ -371,7 +370,7 @@ void BTHID::Run() //virtual
 		case STATE_DISCONNECT_OPERATION:
 			if(m_event_flag & EV_FLAG_DISCONNECT_REQUEST) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] DISCONNECT_REQUEST"));
+				Notify(PSTR("\r\n[EV_FLAG] DISCONNECT_REQUEST"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_DISCONNECT_REQUEST;
@@ -387,7 +386,7 @@ void BTHID::Run() //virtual
 			// First the two L2CAP channels has to be disconencted and then the HCI connection
 			if(SDPConnected) {
 #ifdef DEBUG
-				Notify(PSTR("\r\ndisconnect sdp"));
+				Notify(PSTR("\r\ndisconnect sdp"), 0x80);
 #endif
 				uint8_t disconnect_dcid[2];
 				disconnect_dcid[0] = (uint8_t)(SDP_DCID & 0xFF);
@@ -397,7 +396,7 @@ void BTHID::Run() //virtual
 				delay(5);
 			} else if(HID_CTRL_Connected) {
 #ifdef DEBUG
-				Notify(PSTR("\r\ndisconnect HID_CTRL"));
+				Notify(PSTR("\r\ndisconnect HID_CTRL"), 0x80);
 #endif
 				uint8_t disconnect_dcid[2];
 				disconnect_dcid[0] = (uint8_t)(HID_CTRL_DCID & 0xFF);
@@ -407,7 +406,7 @@ void BTHID::Run() //virtual
 				delay(5);
 			} else if(HID_INTR_Connected) {
 #ifdef DEBUG
-				Notify(PSTR("\r\ndisconnect HID_INTR"));
+				Notify(PSTR("\r\ndisconnect HID_INTR"), 0x80);
 #endif
 				uint8_t disconnect_dcid[2];
 				disconnect_dcid[0] = (uint8_t)(HID_INTR_DCID & 0xFF);
@@ -417,7 +416,7 @@ void BTHID::Run() //virtual
 				delay(5);
 			} else {
 #ifdef DEBUG
-				Notify(PSTR("\r\nhci_disconnect"));
+				Notify(PSTR("\r\nhci_disconnect"), 0x80);
 #endif
 				pBtd->hci_disconnect(pBtd->hci_handle);
 				pBtd->hci_handle = -1;
@@ -428,7 +427,7 @@ void BTHID::Run() //virtual
 		case STATE_SDP_OPERATION:
 			if (m_event_flag & EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_L2CAP) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_SEARCH_REQUEST_L2CAP"));
+				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_SEARCH_REQUEST_L2CAP"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_L2CAP;
@@ -437,7 +436,7 @@ void BTHID::Run() //virtual
 			
 			if (m_event_flag & EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_UNKNOWN) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_SEARCH_REQUEST_UNKNOWN"));
+				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_SEARCH_REQUEST_UNKNOWN"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_SDP_SERVICE_SEARCH_REQUEST_UNKNOWN;
@@ -446,7 +445,7 @@ void BTHID::Run() //virtual
 			
 			if (m_event_flag & EV_FLAG_SDP_SERVICE_ATTRIBUTE_REQUEST) {
 #ifdef DEBUG
-				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_ATTRIBUTE_REQUEST"));
+				Notify(PSTR("\r\n[EV_FLAG] SDP_SERVICE_ATTRIBUTE_REQUEST"), 0x80);
 #endif
 				//Clear EventFlag
 				m_event_flag &= ~EV_FLAG_SDP_SERVICE_ATTRIBUTE_REQUEST;
@@ -736,8 +735,8 @@ void BTHID::sdp_ServiceAttributeResponse() {
 	l2capoutbuf[tmp_size] = 0x00; // No more data
 	
 #ifdef DEBUG
-	Notify(PSTR("\r\ntmp_size: 0x"));
-	PrintHex<uint8_t>(tmp_size);
+	Notify(PSTR("\r\ntmp_size: 0x"), 0x80);
+	PrintHex<uint8_t>(tmp_size, 0x80);
 #endif
 	
 	l2capoutbuf[4] = (tmp_size+1) - 5;  // Parameter Length
@@ -751,34 +750,34 @@ void BTHID::sdp_ServiceAttributeResponse() {
 /************************************************************/
 void BTHID::HID_Command(uint8_t* data, uint8_t nbytes) {
 #ifdef DEBUG
-	Notify(PSTR("\r\nhci_handle: "));
-	PrintHex<uint8_t>(pBtd->hci_handle & 0xff);
-	Notify(PSTR(" "));
-	PrintHex<uint8_t>(((pBtd->hci_handle >> 8) & 0x0f) | 0x20);
-	Notify(PSTR(" HID_Command: "));
-	PrintHex<uint8_t>(m_control_scid[0]);
-	Notify(PSTR(" "));
-	PrintHex<uint8_t>(m_control_scid[1]);
+	Notify(PSTR("\r\nhci_handle: "), 0x80);
+	PrintHex<uint8_t>(pBtd->hci_handle & 0xff, 0x80);
+	Notify(PSTR(" "), 0x80);
+	PrintHex<uint8_t>(((pBtd->hci_handle >> 8) & 0x0f) | 0x20, 0x80);
+	Notify(PSTR(" HID_Command: "), 0x80);
+	PrintHex<uint8_t>(m_control_scid[0], 0x80);
+	Notify(PSTR(" "), 0x80);
+	PrintHex<uint8_t>(m_control_scid[1], 0x80);
 #endif
 		pBtd->L2CAP_Command(pBtd->hci_handle,data,nbytes,m_control_scid[0],m_control_scid[1]);//control
 }
 
 void BTHID::HID_Command_interrupt(uint8_t* data, uint8_t nbytes) {
 #ifdef EXTRADEBUG
-	Notify(PSTR("\r\nhci_handle: "));
-	PrintHex<uint8_t>(pBtd->hci_handle & 0xff);
-	Notify(PSTR(" "));
-	PrintHex<uint8_t>(((pBtd->hci_handle >> 8) & 0x0f) | 0x20);
-	Notify(PSTR(" HID_Command: "));
-	PrintHex<uint8_t>(m_interrupt_scid[0]);
-	Notify(PSTR(" "));
-	PrintHex<uint8_t>(m_interrupt_scid[1]);
+	Notify(PSTR("\r\nhci_handle: "), 0x80);
+	PrintHex<uint8_t>(pBtd->hci_handle & 0xff, 0x80);
+	Notify(PSTR(" "), 0x80);
+	PrintHex<uint8_t>(((pBtd->hci_handle >> 8) & 0x0f) | 0x20, 0x80);
+	Notify(PSTR(" HID_Command: "), 0x80);
+	PrintHex<uint8_t>(m_interrupt_scid[0], 0x80);
+	Notify(PSTR(" "), 0x80);
+	PrintHex<uint8_t>(m_interrupt_scid[1], 0x80);
 #endif
 	pBtd->L2CAP_Command(pBtd->hci_handle,data,nbytes,m_interrupt_scid[0],m_interrupt_scid[1]);//interrupt
 }
 void BTHID::HID_Handshake(uint8_t result_code) {
 #ifdef DEBUG
-	Notify(PSTR("\r\nHID_Handshake"));
+	Notify(PSTR("\r\nHID_Handshake"), 0x80);
 #endif
 	uint8_t cmd_buf[1];
 	cmd_buf[0] = (result_code |(0x00 << 4)) ;
@@ -788,20 +787,20 @@ void BTHID::HID_Handshake(uint8_t result_code) {
 
 void BTHID::HID_sendKeyCodes(uint8_t modifier, uint8_t keycode1, uint8_t keycode2, uint8_t keycode3, uint8_t keycode4, uint8_t keycode5, uint8_t keycode6) {
 #ifdef DEBUG
-	Notify(PSTR("\r\nHID_sendKeyCodes ModifierKey:0x"));
-	PrintHex<uint8_t>(modifier);
-	Notify(PSTR(" keycode1:0x"));
-	PrintHex<uint8_t>(keycode1);
-	Notify(PSTR(" KC2:0x"));
-	PrintHex<uint8_t>(keycode2);
-	Notify(PSTR(" KC3:0x"));
-	PrintHex<uint8_t>(keycode3);
-	Notify(PSTR(" KC4:0x"));
-	PrintHex<uint8_t>(keycode4);
-	Notify(PSTR(" KC5:0x"));
-	PrintHex<uint8_t>(keycode5);
-	Notify(PSTR(" KC6:0x"));
-	PrintHex<uint8_t>(keycode6);
+	Notify(PSTR("\r\nHID_sendKeyCodes ModifierKey:0x"), 0x80);
+	PrintHex<uint8_t>(modifier, 0x80);
+	Notify(PSTR(" keycode1:0x"), 0x80);
+	PrintHex<uint8_t>(keycode1, 0x80);
+	Notify(PSTR(" KC2:0x"), 0x80);
+	PrintHex<uint8_t>(keycode2, 0x80);
+	Notify(PSTR(" KC3:0x"), 0x80);
+	PrintHex<uint8_t>(keycode3, 0x80);
+	Notify(PSTR(" KC4:0x"), 0x80);
+	PrintHex<uint8_t>(keycode4, 0x80);
+	Notify(PSTR(" KC5:0x"), 0x80);
+	PrintHex<uint8_t>(keycode5, 0x80);
+	Notify(PSTR(" KC6:0x"), 0x80);
+	PrintHex<uint8_t>(keycode6, 0x80);
 #endif
 	uint8_t cmd_buf[9];
 	cmd_buf[0] = 0xA1; 
@@ -820,7 +819,7 @@ void BTHID::HID_sendKeyCodes(uint8_t modifier, uint8_t keycode1, uint8_t keycode
 
 void BTHID::HID_allKeyUp() {
 #ifdef DEBUG
-	Notify(PSTR("\r\nHID_allKeyUp"));
+	Notify(PSTR("\r\nHID_allKeyUp"), 0x80);
 #endif
 	
 	HID_sendKeyCodes(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
@@ -850,7 +849,7 @@ void BTHID::HID_SendCharacter(uint8_t ascii) {
 	}
 #ifdef DEBUG
 	if (tmp_modifier == 0x02) {
-			Notify(PSTR("\r\n//Shift//"));
+			Notify(PSTR("\r\n//Shift//"), 0x80);
 	}
 #endif
 	
@@ -862,10 +861,10 @@ void BTHID::HID_SendCharacter(uint8_t ascii) {
 
 uint8_t BTHID::HID_AsciitoKeycode(uint8_t ascii) {
 #ifdef DEBUG
-	Notify(PSTR("\r\nHID_AsciitoKeycode: 0x"));
-	PrintHex<uint8_t>(ascii);
-	Notify(PSTR(" -> 0x"));
-	PrintHex<uint8_t>(pgm_read_byte(&asciiandkeycode[(uint8_t) ascii]));
+	Notify(PSTR("\r\nHID_AsciitoKeycode: 0x"), 0x80);
+	PrintHex<uint8_t>(ascii, 0x80);
+	Notify(PSTR(" -> 0x"), 0x80);
+	PrintHex<uint8_t>(pgm_read_byte(&asciiandkeycode[(uint8_t) ascii]), 0x80);
 #endif
 	
 	return pgm_read_byte(&asciiandkeycode[(uint8_t) ascii]);
@@ -875,8 +874,8 @@ void BTHID::HID_sendString(char *str) {
 	uint8_t tmp_counter = 0;
 	while (*str != '\0') {
 #ifdef DEBUG
-		Notify(PSTR("\r\nHID_sendString: "));
-		PrintHex<uint8_t>(*str);
+		Notify(PSTR("\r\nHID_sendString: "), 0x80);
+		PrintHex<uint8_t>(*str, 0x80);
 #endif
 		HID_SendCharacter(*str);
 		*str++;
