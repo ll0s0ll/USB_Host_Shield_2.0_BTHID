@@ -1,170 +1,136 @@
-# USB Host Library Rev.2.0
+# USB Host Library Rev.2.0 BTHID
 
 The code is released under the GNU General Public License.
-__________
 
-# Summary
-This is Revision 2.0 of MAX3421E-based USB Host Shield Library for AVR's.
-
-Project main web site is: <http://www.circuitsathome.com>.
-
-Some information can also be found at: <http://blog.tkjelectronics.dk/>.
-
-The shield can be purchased at the main site: <http://www.circuitsathome.com/products-page/arduino-shields> or from [TKJ Electronics](http://tkjelectronics.com/): <http://shop.tkjelectronics.dk/product_info.php?products_id=43>.
-
-![USB Host Shield](http://www.circuitsathome.com/wp/wp-content/uploads/2012/02/UHS_20_main-288x216.jpg)
-
-For more information about the hardware see the [Hardware Manual](http://www.circuitsathome.com/usb-host-shield-hardware-manual).
-
-# Developed By
-
-* <b>Oleg Mazurov, Circuits@Home</b> - <mazurov@circuitsathome.com>
-	* Developer of the USB Core, HID, FTDI, ADK, ACM, and PL2303 libraries
-* <b>Kristian Lauszus, TKJ Electronics</b> - <kristianl@tkjelectronics.com>
-	* Developer of the BTD, SPP, PS3, Wii, and Xbox libraries
-
-# How to include the library
-
-First download the library by clicking on the following link: <https://github.com/felis/USB_Host_Shield_2.0/archive/master.zip>.
-
-Then uncompress the zip folder and rename the directory to "USB\_Host\_Shield\_20", as any special characters are not supported by the Arduino IDE.
-
-Now open up the Arduino IDE and open "File>Preferences". There you will see the location of your sketchbook. Open that directory and create a directory called "libraries" inside that directory.
-Now move the "USB\_Host\_Shield\_20" directory to the "libraries" directory.
-
-The final structure should look like this:
-
-* Arduino/
-	* libraries/
-		* USB\_Host\_Shield\_20/
-
-Now quit the Arduino IDE and reopen it.
-
-Now you should be able to go open all the examples codes by navigating to "File>Examples>USB\_Host\_Shield\_20" and then select the example you will like to open.
-
-For more information visit the following site: <http://arduino.cc/en/Guide/Libraries>.
-
-# How to use the library
-
-### Documentation
-
-Documentation for the library can be found at the following link: <http://felis.github.com/USB_Host_Shield_2.0/>.
-
-### Arduino ADK
-To use this library with the official [Arduino ADK](http://arduino.cc/en/Main/ArduinoBoardADK) uncomment the following line in [avrpins.h](https://github.com/felis/USB_Host_Shield_2.0/blob/master/avrpins.h):
-
-<code>
-\#define BOARD\_MEGA_ADK
-</code>
-
-### [Bluetooth libraries](https://github.com/felis/USB_Host_Shield_2.0/blob/master/BTD.cpp)
-
-The [BTD library](https://github.com/felis/USB_Host_Shield_2.0/blob/master/BTD.cpp) is a general purpose library for an ordinary Bluetooth dongle.
-This library make it easy to add support for different Bluetooth services like a PS3 or a Wii controller or SPP which is a virtual serial port via Bluetooth.
-Some different examples can be found in the [example directory](https://github.com/felis/USB_Host_Shield_2.0/tree/master/examples/Bluetooth).
-
-The BTD library will also make it possible to use multiple services at once, the following example sketch is an example of this:
-<https://github.com/felis/USB_Host_Shield_2.0/blob/master/examples/Bluetooth/PS3SPP/PS3SPP.ino>
-
-### [SPP library](https://github.com/felis/USB_Host_Shield_2.0/blob/master/SPP.cpp)
-
-SPP stands for "Serial Port Profile" and is a Bluetooth protocol that implements a virtual comport which allows you to send data back and forth from your computer/phone to your Arduino via Bluetooth.
-It has been tested successfully on Windows, Mac OS X, Linux, and Android.
-
-More information can be found at these blog posts:
-
-* <http://www.circuitsathome.com/mcu/bluetooth-rfcommspp-service-support-for-usb-host-2-0-library-released>
-* <http://blog.tkjelectronics.dk/2012/07/rfcommspp-library-for-arduino/>
-
-To implement the SPP protocol I used a Bluetooth sniffing tool called [PacketLogger](http://www.tkjelectronics.com/uploads/PacketLogger.zip) developed by Apple. 
-It enables me to see the Bluetooth communication between my Mac and any device.
-
-### PS3 Library
-
-These libraries consist of the [PS3BT](https://github.com/felis/USB_Host_Shield_2.0/blob/master/PS3BT.cpp) and [PS3USB](https://github.com/felis/USB_Host_Shield_2.0/blob/master/PS3USB.cpp). These libraries allows you to use a Dualshock 3, Navigation or a Motion controller with the USB Host Shield both via Bluetooth and USB.
-
-In order to use your Playstation controller via Bluetooth you have to set the Bluetooth address of the dongle internally to your PS3 Controller. This can be achieved by plugging the controller in via USB and letting the library set it automatically.
-
-__Note:__ To obtain the address you have to plug in the Bluetooth dongle before connecting the controller, or alternatively you could set it in code like so: <https://github.com/felis/USB_Host_Shield_2.0/blob/master/examples/Bluetooth/PS3BT/PS3BT.ino#L12>.
-
-For more information about the PS3 protocol see the official wiki: <https://github.com/felis/USB_Host_Shield_2.0/wiki/PS3-Information>.
-
-Also take a look at the blog posts:
-
-* <http://blog.tkjelectronics.dk/2012/01/ps3-controller-bt-library-for-arduino/>
-* <http://www.circuitsathome.com/mcu/sony-ps3-controller-support-added-to-usb-host-library>
-* <http://www.circuitsathome.com/mcu/arduino/interfacing-ps3-controllers-via-usb>
-
-A special thanks go to the following people:
-
-1. _Richard Ibbotson_ who made this excellent guide: <http://www.circuitsathome.com/mcu/ps3-and-wiimote-game-controllers-on-the-arduino-host-shield-part>
-2. _Tomoyuki Tanaka_ for releasing his code for the Arduino USB Host shield connected to the wiimote: <http://www.circuitsathome.com/mcu/rc-car-controlled-by-wii-remote-on-arduino>
-
-Also a big thanks all the people behind these sites about the Motion controller:
-
-* <http://thp.io/2010/psmove/>
-* <http://www.copenhagengamecollective.org/unimove/>
-* <https://github.com/thp/psmoveapi>
-* <http://code.google.com/p/moveonpc/>
-
-### Xbox 360 Library
-
-The library support one Xbox 360 via USB or up to four Xbox 360 controllers wirelessly by using a [Xbox 360 wireless receiver](http://blog.tkjelectronics.dk/wp-content/uploads/xbox360-wireless-receiver.jpg).
-
-To use it via USB use the [XBOXUSB](https://github.com/felis/USB_Host_Shield_2.0/blob/master/XBOXUSB.cpp) library or to use it wirelessly use the [XBOXRECV](https://github.com/felis/USB_Host_Shield_2.0/blob/master/XBOXRECV.cpp) library.
-
-__Note that a Wireless controller can NOT be used via USB!__
-
-Examples code can be found in the [examples directory](https://github.com/felis/USB_Host_Shield_2.0/tree/master/examples/Xbox).
-
-Also see the following blog posts:
-
-* <http://www.circuitsathome.com/mcu/xbox360-controller-support-added-to-usb-host-shield-2-0-library>
-* <http://blog.tkjelectronics.dk/2012/07/xbox-360-controller-support-added-to-the-usb-host-library/>
-* <http://blog.tkjelectronics.dk/2012/12/xbox-360-receiver-added-to-the-usb-host-library/>
-
-All the information regarding the Xbox 360 controller protocol are form these sites:
-
-* <http://tattiebogle.net/index.php/ProjectRoot/Xbox360Controller/UsbInfo>
-* <http://tattiebogle.net/index.php/ProjectRoot/Xbox360Controller/WirelessUsbInfo>
-* <https://github.com/Grumbel/xboxdrv/blob/master/PROTOCOL>
-
-### [Wii library](https://github.com/felis/USB_Host_Shield_2.0/blob/master/Wii.cpp)
-
-The [Wii](https://github.com/felis/USB_Host_Shield_2.0/blob/master/Wii.cpp) library support the Wiimote, but also the Nunchuch and Motion Plus extensions via Bluetooth. The Wii U Pro Controller is also supported via Bluetooth.
-
-First you have to pair with the controller, this is done automatically by the library if you create the instance like so:
-
-<code>
-WII Wii(&Btd,PAIR);
-</code>
-
-And then press 1 & 2 at once on the Wiimote or press sync if you are using a Wii U Pro Controller.
-
-After that you can simply create the instance like so:
-
-<code>
-WII Wii(&Btd);
-</code>
-
-Then just press any button any button on the Wiimote and it will connect to the dongle.
-
-Take a look at the example for more information: <https://github.com/felis/USB_Host_Shield_2.0/blob/master/examples/Bluetooth/Wii/Wii.ino>.
-
-Also take a look at the blog post:
-
-* <http://blog.tkjelectronics.dk/2012/08/wiimote-added-to-usb-host-library/>
-
-All the information about the Wii controllers are from these sites:
-
-* <http://wiibrew.org/wiki/Wiimote>
-* <http://wiibrew.org/wiki/Wiimote/Extension_Controllers>
-* <http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Nunchuck>
-* <http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Wii_Motion_Plus>
-* The old library created by _Tomoyuki Tanaka_: <https://github.com/moyuchin/WiiRemote_on_Arduino> also helped a lot.
-
-# FAQ
-
-> When I plug my device into the USB connector nothing happens?
-
-Try to connect a external power supply to the Arduino - this solves the problem in most cases.
+# 概要
+USB Host Library for ArduinoをBluetooth HIDに特化させたものです。USB\_Host\_Shield\_2.0リポジトリよりフォークして作られました。  USB\_Host\_Shield\_2.0については下記をご覧ください。  
+  
+USB\_Host\_Shield\_2.0 リポジトリ  
+<http://github.com/felis/USB\_Host\_Shield\_2.0>  
+プロジェクトサイト   
+<http://www.circuitsathome.com>
+
+Bluetooth HIDは一般的な規格ですが、ArduinoからiPadへ文字を入力することを目的として開発されたため、現時点では一部のBluetooth HID対応デバイスでしか動作しません。今後はPCなどでも使えるようになればよいなと考えています。  
+  
+USB\_Host\_Shield\_2.0\_BTHID リポジトリ  
+<http://github.com/ll0s0ll/USB\_Host\_Shield\_2.0\_BTHID>  
+プロジェクトサイト  
+<http://ll0s0ll.wordpress.com/>  
+
+# 必要なもの
+* Arduino（Uno R1を使ってテストしました）  
+* USB Host Shield  
+* Bluetoothドングル（PLANEX社のBT-MicroEDR1Xを使ってテストしました。他のドングルも使えるかもしれません）  
+* iPad（3rdモデルでテストしました）
+
+# 使い方
+##Arduino IDE にライブラリをとりこむ  
+USB Host Library Rev.2.0 BTHIDは、Arduino IDEで使えるライブラリになっています。
+    
+1. 下記URLよりライブラリをダウンロードし、解凍します。  
+<http://github.com/ll0s0ll/USB_Host_Shield_2.0_BTHID/archive/master.zip>  
+  
+2. Arduino IDEではライブラリ名に「.」が使えませんので、「USB\_Host\_Shield\_20\_BTHID」等にフォルダ名を変更します。  
+  
+3. Arduino IDEを起動し、メニューから環境設定を開きます。環境設定の「スケッチブックの保存場所」を控えます。  
+  
+4. 「スケッチブックの保存場所」に記載されたフォルダをFinder等で開きます。そのフォルダの中に「libraries」というフォルダがあれば、そこにダウンロード&リネームしたフォルダをいれます。「USB\_Host\_Shield\_20\_BTHID」にリネームした場合、 下記のような階層構造になります。 
+  * Arduino/
+  	  * libraries/
+		  * USB\_Host\_Shield\_20\_BTHID/  
+5. Arduino IDEを再起動します。メニューの ファイル>スケッチの例 に、USB\_Host\_Shield\_20\_BTHID が出てくれば成功です。
+    
+##ライブラリの使い方  
+ライブラリの使い方を知るためには、スケッチの例を見るのが一番です。メニューから ファイル>スケッチの例>USB\_Host\_Shield\_20\_BTHID>BTHIDを開きます。基本的な部分は下記の4つです。
+    
+1. 必要なファイルをインクルードします。  
+`#include <BTHID.h>` 
+  
+2. クラスのインスタンス化をします。  
+`USB Usb;`  
+`BTD Btd(&Usb);`  
+`BTHID bthid(&Btd);`  
+
+3. setup()でUSB部を初期化し、デバイス名をつけます。  
+`Usb.Init();  //返り値が-1の場合はエラー   `   
+`Btd.btdName = "Arduino";  //任意の名前を設定  `  
+  
+4. loop()内で思う存分コードを書く。  
+`Usb.Task();  //USB部分の制御のためコールが必要`  
+  
+用意されている関数は５つです。これらの関数に送信したいデータを投げることで、Bluetooth HIDを通してデバイスにデータが送られます。データの型によって使い分けてください。  コードの例はBTHIDクラスをbthidという名前でインスタンス化した場合を表しています。
+  
+1. `void HID_SendCharacter(uint8_t ascii);`  
+文字列を送信する関数です。最大32文字まで一度に送信できます。(最大値は機種によって異なります）ASCIIに準じた文字を送信できます。
+  
+ コードの例   
+ `char str[] = "Hello World!";  //送信したい文字列を作成`  
+ `bthid.HID_sendString(str);  //「Hello World!」と送信`  
+   
+2. `void HID_sendInteger(int16_t integer);`  
+整数型を送信する関数です。メモリを食います。ビット数が少なくてよい場合はもう少し節約できるかもしれません。  
+  
+ コードの例    
+ `bthid.HID_sendInteger(12345);  //12345を送信`  
+  
+3. `void HID_sendFloat(float myfloat);`  
+浮動小数点型を送信する関数です。  桁数は調整すればもう少し増えるかもしれません。  
+  
+ コードの例  
+ `bthid.HID_sendFloat(3.1415);  //3.1415を送信` 
+  
+4. `void HID_SendCharacter(uint8_t ascii);`  
+ASCIIコードを変換して送信する関数です。ASCIIコードを投げてください。変換部分は制御文字を除いた部分を実装しています。（CRはReturn、SPはSpace、DELはDeleteに実装しています）  
+  
+ コードの例  
+ `bthid.HID_SendCharacter(0x7F);   //0x7F = DEL(Delete)を送信`  
+  
+5. `void HID_sendKeyCodes(uint8_t modifier, uint8_t keycode1, uint8_t keycode2, uint8_t keycode3, uint8_t keycode4, uint8_t keycode5, uint8_t keycode6);`  
+キーコードを送信する関数です。同時に6キーを入力できるようになっています。（同時に入力できる数はデバイスによって異なります）この関数を呼ぶとキーが押しっぱなしになっている状態になりますので、必ず`void HID_allKeyUp()`と併用するか、0x00のキーコードを送信してください。  
+  
+ キーコードはASCIIコードと異なるもので、USB接続のキーボード等で使われる規格です。詳しい値はUSB.orgから発行されている「Universal Serial Bus HID Usage Tables」の10章「Keyboard/Keypad Page (0x07)」（53ページ以降）に記載されています。 Usage IDをキーコードと読み替えてください。
+    
+ `uint8_t modifier`は修飾キー用の変数です。キーコード0xE0から0xE7までのキーが対象です。（0xE0=LeftControl、0xE1=LeftShift、0xE2=LeftAlt、0xE3=Left GUI、0xE4=RightControl、0xE5=RightShift、0xE6=RightAlt、0xE7=Right GUI）0xE0から0x01となるため、LeftShiftキーを押したい場合は`modifier = 0x02`となります。
+  
+ コードの例  
+ `bthid.HID_sendKeyCodes(0x02,0x04,0x00,0x00,0x00,0x00,0x00);  //'A'を入力（0x02=LeftShift and 0x04='a'）`  
+ `delay(5);  //少し時間を置きます`  
+ `bthid.HID_allKeyUp();            // キーを放す`  
+ `delay(5);  //少し時間を置きます`  
+  
+##スケッチの例について  
+スケッチの例は、Arduino IDEのシリアルモニタを通して送られた数字によって、異なった関数が動くようになっています。  使い方は下記のようになります。  
+  
+1. Arduino IDEを起動し、メニューから ファイル>スケッチの例>USB\_Host\_Shield\_20\_BTHID>BTHID を開く
+2. ファイル＞マイコンボードに書き込む でプログラムをArduinoに書き込む。  
+3. ツール＞シリアルモニタ でシリアルモニタを開く。  
+4. シリアルモニタに「Bluetooth HID」と表示されて、処理が始まる。「OSC did not start」と表示される場合は、リセットボタンを押したりUSBケーブルをさし直してみたりする。  
+5. 「Wait For Incoming Connection Request」と表示されたら検出可能状態になったので、iPad等のデバイスからペアリング操作をする。  
+6. ペアリングが完了したら、シリアルモニタに目的の文字を入力して、送信ボタンを押す。  
+7. 入力した文字に応じて、接続したデバイスに下記のように入力される。  
+ * 1を入力した場合は「Hello World!」と入力される  
+ * 2を入力した場合は「12345」と入力される  
+ * 3を入力した場合は「3.1415」と入力される  
+ * 4を入力した場合は、EISUキーが入力される（日本語環境のみ）  
+ * 5を入力した場合は、KANAキーが入力される（日本語環境のみ）  
+ * Qを入力した場合は、接続を切断する  
+ * Dを入力した場合は、Deleteが入力される
+ * Rを入力した場合は、Returnが入力される
+8. その他のキーを入力した場合は、打ち込んだキーが入力される（ASCIIに対応したもキーのみ）  
+
+#参考資料
+ASCIIコードが掲載されています。  
+Arduino - ASCIIchart  
+<http://arduino.cc/en/Reference/ASCIIchart>　　
+  
+Apple Pro Keyboard JIS配列のキーコードが掲載されています。  
+森山 将之のホームページ - USBキーボードのキーコード  
+<http://www2d.biglobe.ne.jp/~msyk/keyboard/layout/usbkeycode.html>  
+  
+キーコードが記載されています。  
+USB.org - Universal Serial Bus HID Usage Tables  
+<http://www.usb.org/developers/devclass_docs/Hut1_11.pdf>  
+  
+PICマイコンを使ってBluetoothドングルをコントロールする方法がたいへん詳しく書かれています。  
+辻見裕史のホームページ - PIC  
+<http://phys.sci.hokudai.ac.jp/LABS/yts/pic/pic.html>
