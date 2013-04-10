@@ -2,7 +2,7 @@
 
 The code is released under the GNU General Public License.
 
-# 概要
+## 概要
 USB Host Library for ArduinoをBluetooth HIDに特化させたものです。USB\_Host\_Shield\_2.0リポジトリよりフォークして作られました。  USB\_Host\_Shield\_2.0については下記をご覧ください。  
   
 USB\_Host\_Shield\_2.0 リポジトリ  
@@ -17,14 +17,14 @@ USB\_Host\_Shield\_2.0\_BTHID リポジトリ
 プロジェクトサイト  
 <http://ll0s0ll.wordpress.com/>  
 
-# 必要なもの
+## 必要なもの
 * Arduino（Uno R1を使ってテストしました）  
 * USB Host Shield  
 * Bluetoothドングル（PLANEX社のBT-MicroEDR1Xを使ってテストしました。他のドングルも使えるかもしれません）  
 * iPad（3rdモデルでテストしました）
 
-# 使い方
-##Arduino IDE にライブラリをとりこむ  
+## 使い方
+###Arduino IDE にライブラリをとりこむ  
 USB Host Library Rev.2.0 BTHIDは、Arduino IDEで使えるライブラリになっています。
     
 1. 下記URLよりライブラリをダウンロードし、解凍します。  
@@ -40,8 +40,8 @@ USB Host Library Rev.2.0 BTHIDは、Arduino IDEで使えるライブラリにな
 		  * USB\_Host\_Shield\_20\_BTHID/  
 5. Arduino IDEを再起動します。メニューの ファイル>スケッチの例 に、USB\_Host\_Shield\_20\_BTHID が出てくれば成功です。
     
-##ライブラリの使い方  
-ライブラリの使い方を知るためには、スケッチの例を見るのが一番です。メニューから ファイル>スケッチの例>USB\_Host\_Shield\_20\_BTHID>BTHIDを開きます。基本的な部分は下記の4つです。
+###ライブラリの使い方  
+ライブラリの使い方を知るためには、スケッチの例を見るのが一番です。メニューから ファイル＞スケッチの例＞USB\_Host\_Shield\_20\_BTHID＞BTHIDを開きます。基本的な部分は下記の4つです。
     
 1. 必要なファイルをインクルードします。  
 `#include <BTHID.h>` 
@@ -60,7 +60,7 @@ USB Host Library Rev.2.0 BTHIDは、Arduino IDEで使えるライブラリにな
   
 用意されている関数は５つです。これらの関数に送信したいデータを投げることで、Bluetooth HIDを通してデバイスにデータが送られます。データの型によって使い分けてください。  コードの例はBTHIDクラスをbthidという名前でインスタンス化した場合を表しています。
   
-1. `void HID_SendCharacter(uint8_t ascii);`  
+1. `void HID_sendString(char *str);`  
 文字列を送信する関数です。最大32文字まで一度に送信できます。(最大値は機種によって異なります）ASCIIに準じた文字を送信できます。
   
  コードの例   
@@ -98,10 +98,10 @@ ASCIIコードを変換して送信する関数です。ASCIIコードを投げ�
  `bthid.HID_allKeyUp();            // キーを放す`  
  `delay(5);  //少し時間を置きます`  
   
-##スケッチの例について  
-スケッチの例は、Arduino IDEのシリアルモニタを通して送られた数字によって、異なった関数が動くようになっています。  使い方は下記のようになります。  
+###スケッチの例について  
+スケッチの例は、Arduino IDEのシリアルモニタを通して送られた文字によって、異なった関数が動くようになっています。  使い方は下記のようになります。  
   
-1. Arduino IDEを起動し、メニューから ファイル>スケッチの例>USB\_Host\_Shield\_20\_BTHID>BTHID を開く
+1. Arduino IDEを起動し、メニューから ファイル＞スケッチの例＞USB\_Host\_Shield\_20\_BTHID＞BTHID を開く
 2. ファイル＞マイコンボードに書き込む でプログラムをArduinoに書き込む。  
 3. ツール＞シリアルモニタ でシリアルモニタを開く。  
 4. シリアルモニタに「Bluetooth HID」と表示されて、処理が始まる。「OSC did not start」と表示される場合は、リセットボタンを押したりUSBケーブルをさし直してみたりする。  
@@ -118,7 +118,7 @@ ASCIIコードを変換して送信する関数です。ASCIIコードを投げ�
  * Rを入力した場合は、Returnが入力される
 8. その他のキーを入力した場合は、打ち込んだキーが入力される（ASCIIに対応したもキーのみ）  
 
-#参考資料
+##参考資料
 ASCIIコードが掲載されています。  
 Arduino - ASCIIchart  
 <http://arduino.cc/en/Reference/ASCIIchart>　　
